@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -16,9 +17,31 @@ namespace LocateAndChack.Controllers
         }
 
         [HttpPost("UploadFiles")]
-        public JsonResult PostData()
+        public async Task<IActionResult> PostData(List<IFormFile> files)
         {
-            return null;
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.GetTempFileName();
+
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+
+            // process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+
+            // TODO 1) Analyze data. 
+            // 2) Display the page with some initial data (There are different gistograms, links between data columns). 
+            // 3) Display the page with the result from python classifier (also display reports with pdf.js and maps with openlayers).
+            return Ok(new { count = files.Count, size, filePath });
         }
 
         // GET: Defectoskop/Details/5
