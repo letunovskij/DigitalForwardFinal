@@ -16,6 +16,8 @@ namespace LocateAndChack.Controllers
             return View();
         }
 
+        //[RequestSizeLimit(100_000_000_000_000)]
+        [DisableRequestSizeLimit]
         [HttpPost("UploadFiles")]
         public async Task<IActionResult> PostData(List<IFormFile> files)
         {
