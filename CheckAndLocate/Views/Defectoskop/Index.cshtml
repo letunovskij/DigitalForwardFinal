@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewData["Title"] = "Страница загрузки данных";
+}
+
+<h2>Загрузка данных дефектоскопа</h2>
+
+<form method="post" enctype="multipart/form-data" asp-controller="Defectoskop" asp-action="PostData">
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Загрузить один или несколько файлов данных дефектоскопов:</p>
+            <input type="file" name="files" multiple>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Загрузить данные">
+        </div>
+    </div>
+</form>
+
+
+    @*function sendFiles(userId1, updId1, orderId1, reclamationElementInternalId1) {
+        var formData = new FormData();
+
+        var totalFiles = $("#chkBrakFiles" + reclamationElementInternalId1).get(0).files;
+
+        for (var i = 0; i < totalFiles.length; i++) {
+            var file = $("#chkBrakFiles" + reclamationElementInternalId1).get(0).files[i];
+            formData.append(file.name, file);
+        }
+
+        $.post('/Home/PostPictures',//   ?userId=' + userId1,
+            formData,
+            function (data) {
+                $("#lblConfirmation" + reclamationElementInternalId1).text(data);
+                console.log(data);
+            }
+        );
+    }*@
