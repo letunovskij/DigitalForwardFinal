@@ -31,5 +31,41 @@ namespace CheckAndLocate.ViewModels
         [Display(Name = "Статус")]
         public string Status { get; set; }
 
+        public DefectoskopViewModel(string fileRow)
+        {
+            string[] arrayRow = fileRow.Split(',');
+
+            this.Tag = arrayRow[0];
+
+            double time = 0;
+            Double.TryParse(arrayRow[2], out time);
+            this.Time = time;
+
+            int dist = 0;
+            int.TryParse(arrayRow[3], out dist);
+            this.Dist = dist;
+
+            int wheel1_v = 0;
+            int.TryParse(arrayRow[4], out wheel1_v);
+            this.Wheel1_v = wheel1_v;
+
+            int wheel2_v = 0;
+            int.TryParse(arrayRow[5], out wheel2_v);
+            this.Wheel2_v = wheel2_v;
+
+            int index = 0;
+            int.TryParse(arrayRow[6], out index);
+            this.Index = index;
+
+            int angle = 0;
+            int.TryParse(arrayRow[7], out angle);
+            this.Angle = angle;
+
+            this.Flags = arrayRow[8];
+
+            this.Dist_ext = arrayRow[9];
+
+            this.Status = arrayRow[10];
+        }
     }
 }

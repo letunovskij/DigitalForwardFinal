@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using CheckAndLocate.ViewModels;
 
 namespace LocateAndChack.Controllers
 {
@@ -21,6 +23,8 @@ namespace LocateAndChack.Controllers
         [HttpPost("UploadFiles")]
         public async Task<IActionResult> PostData(List<IFormFile> files)
         {
+            List<DefectoskopViewModel> defVmList = new List<DefectoskopViewModel>();
+
             long size = files.Sum(f => f.Length);
 
             // full path to file in temp location
@@ -30,16 +34,24 @@ namespace LocateAndChack.Controllers
             {
                 if (formFile.Length > 0)
                 {
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    //using (var stream = new FileStream(filePath, FileMode.Create))
+                    //{
+                    //    await formFile.CopyToAsync(stream);
+                    //}
+
+                    var result = new StringBuilder();
+                    using (var reader = new StreamReader(formFile.OpenReadStream()))
                     {
-                        await formFile.CopyToAsync(stream);
+                        var head = reader.ReadLine();
+                        while (reader.Peek() >= 0)
+                        {
+                            var currentRow = reader.ReadLine();
+                            DefectoskopViewModel defVm = new DefectoskopViewModel(currentRow);
+                            defVmList.Add(defVm);
+                        }
                     }
                 }
             }
-
-            // process uploaded files
-            // Don't rely on or trust the FileName property without validation.
-
             // TODO 1) Analyze data. 
             // 2) Display the page with some initial data (There are different gistograms, links between data columns). 
             // 3) Display the page with the result from python classifier (also display reports with pdf.js and maps with openlayers).
