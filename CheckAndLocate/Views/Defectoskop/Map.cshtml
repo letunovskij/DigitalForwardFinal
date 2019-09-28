@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewData["Title"] = "Карта дефектов трубопроводов";
+}
+
+<h2>Отображение нефтепроводов на карте</h2>
+<div id="map" @*class="smallmap"*@></div>
+
+<link rel="stylesheet" href="~/css/openlayers/ol.css" />
+<script src="~/js/openlayers/ol.js" asp-append-version="true"></script>
+<script type="text/javascript">
+
+    var locations = [[55.788, 49.522], [55.988, 45.522], [58.788, 49.122]];
+
+    locations.map(function(l) {
+      return l.reverse();
+    });
+
+    var polyline = new ol.geom.LineString(locations);
+
+    polyline.transform('EPSG:4326', 'EPSG:3857');
+
+    var feature = new ol.Feature(polyline);
+    var fsource = new ol.source.Vector();
+    fsource.addFeature(feature);
+
+    var vectorLayer = new ol.layer.Vector({
+        source: fsource
+    });
+
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM()
+            }),
+            vectorLayer
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([55.788, 49.122]),
+            zoom: 10
+        })
+    });
+
+    map.getView().fit(
+        vectorLayer.getSource().getExtent(), map.getSize(),
+    {padding: [30, 5, 5, 5]});
+    //map.getView().setCenter(ol.proj.transform([77.216574, 28.627671], 'EPSG:4326', 'EPSG:3857'));
+</script>

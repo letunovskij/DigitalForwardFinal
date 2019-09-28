@@ -60,6 +60,11 @@ namespace LocateAndChack.Controllers
             //Ok(new { count = files.Count, size, filePath }); // View Index 
         }
 
+        public IActionResult GetMap()
+        {
+            return View("Map");
+        }
+
         // GET: Defectoskop/Details/5
         public ActionResult Details(int id)
         {

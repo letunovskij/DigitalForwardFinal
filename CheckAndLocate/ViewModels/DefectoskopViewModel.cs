@@ -13,7 +13,7 @@ namespace CheckAndLocate.ViewModels
         //[Display(Name = "Размер данных (технический параметр)")]
         //public int Size { get; set; } // 112
         [Display(Name = "Время считывания (мкс)")]
-        public double Time { get; set; } // 25.691270 111.181856
+        public string Time { get; set; } // 25.691270 111.181856
         [Display(Name = "Дистанция (0.01мм)")] 
         public int Dist { get; set; }
         [Display(Name = "Первый одометр")]
@@ -37,9 +37,9 @@ namespace CheckAndLocate.ViewModels
 
             this.Tag = arrayRow[0];
 
-            double time = 0;
-            Double.TryParse(arrayRow[2], out time);
-            this.Time = time;
+            //double time = 0;
+            //Double.TryParse(arrayRow[2], out time);
+            this.Time = arrayRow[2];//time;
 
             int dist = 0;
             int.TryParse(arrayRow[3], out dist);
