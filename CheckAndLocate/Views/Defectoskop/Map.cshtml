@@ -5,7 +5,9 @@
 
 <h2>Отображение трубопроводов на карте</h2>
 <div id="map"></div>
-
+<br />
+<input type="button" class="btn btn-primary" value="Анимировать на карте и магнитограмме работу беспилотника-дефектоскопа" onclick="" /> 
+<br/>
 <img id="imagGramma" src="~/images/audiogramma.jpg" />
 
 <link rel="stylesheet" href="~/css/openlayers/ol.css" />
@@ -14,15 +16,15 @@
 
     var locations = [[55.788, 49.522], [55.988, 45.522], [58.788, 49.122]];
 
-    locations.map(function(l) {
-      return l.reverse();
+    locations.map(function (l) {
+        return l.reverse();
     });
 
     var polyline = new ol.geom.LineString(locations);
 
     polyline.transform('EPSG:4326', 'EPSG:3857');
-    let tempLocations = new ol.geom.Point(locations[1]);
-    let tempLocations1 = tempLocations.transform('EPSG:4326', 'EPSG:3857');
+    let testCase = new ol.geom.Point(locations[1]);
+    testCase = testCase.transform('EPSG:4326', 'EPSG:3857');
 
     var feature = new ol.Feature({
         type: 'route',
@@ -33,55 +35,38 @@
     fsource.addFeature(feature);
 
     var geoMarker = new ol.Feature({
-      type: 'geoMarker',
-      geometry: tempLocations1
+        type: 'geoMarker',
+        geometry: testCase
     });
 
     var styles = {
-      //'route': new ol.style.Style({
-      //  stroke: new ol.style.Stroke({
-      //    width: 6,
-      //    color: [237, 212, 0, 0.8]
-      //  })
-      //}),
-      //'icon': new ol.style.Style({
-      //  image: new ol.style.Icon({
-      //    anchor: [0.5, 1],
-      //    src: 'https://openlayers.org/en/v3.20.1/examples/data/icon.png'
-      //  })
-      //}),
-      'route': new ol.style.Style({
-        stroke: new ol.style.Stroke({
-          width: 6,
-          color: [237, 212, 0, 0.8]
+        'route': new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                width: 6,
+                color: [237, 212, 0, 0.8]
+            })
+        }),
+        'geoMarker': new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 7,
+                snapToPixel: false,
+                fill: new ol.style.Fill({
+                    color: 'black'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: 'red',
+                    width: 2
+                })
+            })
         })
-      }),
-      'geoMarker': new ol.style.Style({
-        image: new ol.style.Circle({
-          radius: 7,
-          snapToPixel: false,
-          fill: new ol.style.Fill({
-            color: 'black'
-          }),
-          stroke: new ol.style.Stroke({
-            color: 'red',
-            width: 2
-          })
-        })
-      })
     };
 
     fsource.addFeature(geoMarker);
 
     var vectorLayer = new ol.layer.Vector({
         source: fsource,
-        style: function(feature) {
-        // hide geoMarker if animation is active
-        //if (feature.get('type') === 'geoMarker') {
-        //    //return null;
-        //    return styles[feature.get('type')];
-        //}
-        return styles[feature.get('type')];
+        style: function (feature) {
+            return styles[feature.get('type')];
         }
     });
 
