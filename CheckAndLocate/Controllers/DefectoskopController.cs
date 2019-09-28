@@ -29,7 +29,7 @@ namespace LocateAndChack.Controllers
 
             // full path to file in temp location
             var filePath = Path.GetTempFileName();
-
+            var count = 0;
             foreach (var formFile in files)
             {
                 if (formFile.Length > 0)
@@ -43,11 +43,12 @@ namespace LocateAndChack.Controllers
                     using (var reader = new StreamReader(formFile.OpenReadStream()))
                     {
                         var head = reader.ReadLine();
-                        while (reader.Peek() >= 0)
+                        while (reader.Peek() >= 0 && count < 1000)
                         {
                             var currentRow = reader.ReadLine();
                             DefectoskopViewModel defVm = new DefectoskopViewModel(currentRow);
                             defVmList.Add(defVm);
+                            count++;
                         }
                     }
                 }
@@ -55,7 +56,8 @@ namespace LocateAndChack.Controllers
             // TODO 1) Analyze data. 
             // 2) Display the page with some initial data (There are different gistograms, links between data columns). 
             // 3) Display the page with the result from python classifier (also display reports with pdf.js and maps with openlayers).
-            return Ok(new { count = files.Count, size, filePath });
+            return View("Report", defVmList);
+            //Ok(new { count = files.Count, size, filePath }); // View Index 
         }
 
         // GET: Defectoskop/Details/5

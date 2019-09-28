@@ -1,7 +1,35 @@
 ﻿@model List<CheckAndLocate.ViewModels.DefectoskopViewModel>
 
 @{
-    ViewData["Title"] = "Report";
+    ViewData["Title"] = "Данные дефектоскопа";
 }
 
-<h2>Report</h2>
+<div><b>Данные в табличном виде</b><br /></div>
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Тег раздела</th>
+        <th>Время считывания (мкс) </th>
+        <th>Дистанция (0.01мм)</th>
+        <th>Первый одометр</th>
+        <th>Второй одометр</th>
+        <th>Угол поворота дефектоскопа</th>
+        <th>Флаги сканирования</th>
+        <th>Пройденный путь</th>
+        <th>Статус</th>
+    </tr>
+    @foreach (var d in Model)
+    {
+<tr>
+    <td>@d.Tag</td>
+    <td>@d.Time</td>
+    <td>@d.Dist</td>
+    <td>@d.Wheel1_v</td>
+    <td>@d.Wheel2_v</td>
+    <td>@d.Index</td>
+    <td>@d.Angle</td>
+    <td>@d.Flags</td>
+    <td>@d.Dist_ext</td>
+</tr>
+
+    }
+</table>  
